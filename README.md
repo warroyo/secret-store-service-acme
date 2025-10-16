@@ -121,7 +121,20 @@ bao secrets tune \
 bao write pki_int/config/acme enabled=true
 ```
 
-2. If you using argocd you can simply deploy [this app](https://github.com/warroyo/vks-argocd-examples/blob/main/secret-store-issuer-full/app.yml) which handles everything
+2. If you using argocd:
+
+```bash
+#deploy the app that installs the pre-reqs like contour cert manager etc.
+kubectl apply -f https://raw.githubusercontent.com/warroyo/vks-argocd-examples/refs/heads/main/contour-ingress/app.yml -n <argo-ns>
+
+# get the IP for contour and create a DNS entry
+
+#deploy the issuer and app
+
+kubectl apply -f https://raw.githubusercontent.com/warroyo/vks-argocd-examples/refs/heads/main/secret-store-issuer-full/app.yml -n <argo-ns>
+
+```
+
 
 
 3. If not using argocd you can follow these steps. you will need to edit sample-app's ingress to match what you set up in DNS so that the http-01 challenge will work.
@@ -144,7 +157,7 @@ kubectl apply -f https://raw.githubusercontent.com/warroyo/vks-argocd-examples/r
 
 kubectl apply -f https://raw.githubusercontent.com/warroyo/vks-argocd-examples/refs/heads/main/cert-manager/issuers/secret-store-acme/issuer.yml
 
-# deploy contour
+# deploy contour, at this point you should get the IP and add DNS
 
 kubectl apply -f https://raw.githubusercontent.com/warroyo/vks-argocd-examples/refs/heads/main/contour-ingress/source/contour.yml -n infra-packages
 
